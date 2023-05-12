@@ -11,6 +11,11 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import browserslist from 'browserslist'
 import legacy from '@vitejs/plugin-legacy'
 import viteCDNPlugin from 'vite-plugin-cdn-import'
+import viteImagemin from 'vite-plugin-imagemin'
+import { resolve } from 'node:path'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+
+const CWD = process.cwd()
 
 const browserslistConfig = browserslist.loadConfig({ path: '.' })
 
@@ -28,6 +33,49 @@ export default defineConfig({
       threshold: 10240,
       algorithm: 'gzip',
       ext: '.gz',
+    }),
+    viteCDNPlugin({
+      // 需要 CDN 加速的模块
+      modules: [
+        {
+          name: 'axios',
+          var: 'axios',
+          path: 'https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js',
+        },
+      ],
+    }),
+    viteImagemin({
+      gifsicle: {
+        optimizationLevel: 7,
+        interlaced: false,
+      },
+      optipng: {
+        optimizationLevel: 7,
+      },
+      mozjpeg: {
+        quality: 20,
+      },
+      pngquant: {
+        quality: [0.8, 0.9],
+        speed: 4,
+      },
+      svgo: {
+        plugins: [
+          {
+            name: 'removeViewBox',
+          },
+          {
+            name: 'removeEmptyAttrs',
+            active: false,
+          },
+        ],
+      },
+    }),
+    createSvgIconsPlugin({
+      // Specify the icon folder to be cached
+      iconDirs: [resolve(CWD, 'src/assets/icons')],
+      // Specify symbolId format
+      symbolId: 'svg-icon-[dir]-[name]',
     }),
     UnoCSS(),
     Components({
@@ -60,9 +108,11 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
+        javascriptEnabled: true,
         //less文件地址
         additionalData: `
         @import "@/assets/styles/base.less";
+        @import 'ant-design-vue/dist/antd.variable.min.css';
       `,
       },
     },

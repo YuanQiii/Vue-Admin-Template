@@ -3,6 +3,7 @@ import App from './App.vue'
 import 'virtual:uno.css'
 import { setupRouter } from './router'
 import { setupStore } from '@/store'
+import 'virtual:svg-icons-register'
 
 const app = createApp(App)
 
