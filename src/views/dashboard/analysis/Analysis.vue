@@ -2,6 +2,4 @@
   <div>Analysis</div>
 </template>
 
-<script lang="ts" setup>
-console.log('Analysis')
-</script>
+<script lang="ts" setup></script>
