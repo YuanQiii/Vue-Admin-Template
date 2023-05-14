@@ -5,7 +5,7 @@
       :open-keys="state.openKeys"
       :mode="'inline'"
       collapsible
-      theme="dark"
+      :theme="appStore.themeMode"
       @click="clickMenuItem"
     >
       <MenuItem :menus="menus" />
@@ -21,6 +21,9 @@ import MenuItem from './MenuItem.vue'
 import { useUserStore } from '@/store/modules/user'
 import { LOGIN_NAME } from '@/router/constant'
 import type { MenuInfo } from 'ant-design-vue/lib/menu/src/interface'
+
+import { useAppStore } from '@/store/modules/app'
+const appStore = useAppStore()
 
 const userStore = useUserStore()
 // 当前路由
@@ -72,6 +75,7 @@ const clickMenuItem = (e: MenuInfo) => {
 <style lang="less" scoped>
 .menu-container {
   overflow: auto;
+  background-color: #fff;
 
   &::-webkit-scrollbar {
     width: 0;

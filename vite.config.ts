@@ -11,7 +11,6 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import browserslist from 'browserslist'
 import legacy from '@vitejs/plugin-legacy'
 import viteCDNPlugin from 'vite-plugin-cdn-import'
-import viteImagemin from 'vite-plugin-imagemin'
 import { resolve } from 'node:path'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
@@ -44,33 +43,6 @@ export default defineConfig({
         },
       ],
     }),
-    viteImagemin({
-      gifsicle: {
-        optimizationLevel: 7,
-        interlaced: false,
-      },
-      optipng: {
-        optimizationLevel: 7,
-      },
-      mozjpeg: {
-        quality: 20,
-      },
-      pngquant: {
-        quality: [0.8, 0.9],
-        speed: 4,
-      },
-      svgo: {
-        plugins: [
-          {
-            name: 'removeViewBox',
-          },
-          {
-            name: 'removeEmptyAttrs',
-            active: false,
-          },
-        ],
-      },
-    }),
     createSvgIconsPlugin({
       // Specify the icon folder to be cached
       iconDirs: [resolve(CWD, 'src/assets/icons')],
@@ -79,7 +51,12 @@ export default defineConfig({
     }),
     UnoCSS(),
     Components({
-      resolvers: [AntDesignVueResolver()],
+      resolvers: [
+        AntDesignVueResolver({
+          // 不加载css, 而是手动加载css. 通过手动加载less文件并将less变量绑定到css变量上, 即可实现动态主题色
+          importStyle: false,
+        }),
+      ],
     }),
     viteMockServe({
       mockPath: 'mock',
@@ -108,12 +85,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
+        additionalData: `@import '@/styles/variables.less';`,
         javascriptEnabled: true,
-        //less文件地址
-        additionalData: `
-        @import "@/assets/styles/base.less";
-        @import 'ant-design-vue/dist/antd.variable.min.css';
-      `,
       },
     },
   },

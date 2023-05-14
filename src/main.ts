@@ -1,9 +1,13 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import 'virtual:uno.css'
+
 import { setupRouter } from './router'
 import { setupStore } from '@/store'
+
+import 'virtual:uno.css'
 import 'virtual:svg-icons-register'
+import 'ant-design-vue/dist/antd.variable.min.css'
+import '@/styles/index.less'
 
 const app = createApp(App)
 

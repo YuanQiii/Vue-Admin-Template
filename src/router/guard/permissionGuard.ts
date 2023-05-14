@@ -9,7 +9,6 @@ import { ACCESS_TOKEN_KEY } from '@/enums/cacheEnum'
 import { Storage } from '@/utils/Storage'
 import { to as _to } from '@/utils/awaitTo'
 import { message as $message } from 'ant-design-vue'
-import 'ant-design-vue/es/message/style/css'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 

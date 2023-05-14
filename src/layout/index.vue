@@ -1,6 +1,6 @@
 <template>
   <a-layout class="flex h-100vh overflow-hidden">
-    <a-layout-sider>
+    <a-layout-sider :theme="appStore.themeMode">
       <Logo />
       <Menu />
     </a-layout-sider>
@@ -13,7 +13,6 @@
           </keep-alive>
         </router-view>
       </a-layout-content>
-      <a-layout-footer>Footer</a-layout-footer>
     </a-layout>
   </a-layout>
 </template>
@@ -23,10 +22,12 @@ import Menu from './menu/Menu.vue'
 import Logo from './logo/Logo.vue'
 import Header from './header/Header.vue'
 
+import { useAppStore } from '@/store/modules/app'
+
 import { useKeepAliveStore } from '@/store/modules/keepAlive'
+
+const appStore = useAppStore()
 const keepAliveStore = useKeepAliveStore()
 // 缓存的路由组件列表
 const keepAliveComponents = computed(() => keepAliveStore.list)
 </script>
-
-<script lang="less" scope></script>
